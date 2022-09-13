@@ -80,9 +80,9 @@ const criandoItens = async () => {
   const listaProdutos = produtos.results;
   listaProdutos.forEach((item) => {
     createProductItemElement({
-      sku: item.id,
-      name: item.title,
-      image: item.thumbnail,
+      id: item.id,
+      title: item.title,
+      thumbnail: item.thumbnail,
     });
   });
 };
