@@ -7,6 +7,8 @@
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 const itemCarrinho = document.querySelector('.cart__items');
+let totalPrice = 0.00;
+const totalPriceHTML = document.querySelector('.total-price');
 
 // botao e funcao de limpar o carrinho
 const clearCartButton = document.querySelector('.empty-cart');
@@ -46,6 +48,8 @@ const createProductImageElement = (imageSource) => {
  * @returns {Element} Elemento de um item do carrinho.
  */
  const createCartItemElement = ({ id, title, price }) => {
+  totalPrice += price;
+  totalPriceHTML.innerText = `VALOR TOTAL: R$ ${totalPrice}`;
   const li = document.createElement('li');
   itemCarrinho.appendChild(li);
   li.className = 'cart__item';
@@ -53,6 +57,8 @@ const createProductImageElement = (imageSource) => {
   li.id = id; // criando id auxiliar
   li.addEventListener('click', () => {
     cartItemClickListener(id);
+    totalPrice -= price;
+    totalPriceHTML.innerText = `VALOR TOTAL: R$ ${totalPrice}`;
   });
   return li;
 };
@@ -125,5 +131,6 @@ const criandoListaDeItens = async () => {
 };
 
 window.onload = () => {
+  totalPriceHTML.innerText = `VALOR TOTAL: R$ ${totalPrice}`;
   criandoListaDeItens();
 };
