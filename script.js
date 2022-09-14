@@ -16,6 +16,8 @@ function clearCart() {
   while (itemCarrinho.lastChild) {
     itemCarrinho.removeChild(itemCarrinho.lastChild);
   }
+  totalPrice = 0.00;
+  totalPriceHTML.innerText = `VALOR TOTAL: R$ ${totalPrice}`;
 }
 clearCartButton.addEventListener('click', clearCart);
 
