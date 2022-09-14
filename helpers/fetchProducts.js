@@ -5,5 +5,9 @@ const fetchProducts = async (product) => {
   const data = await response.json();
   return data;
 };
-console.log(fetchProducts('computador'));
-if (typeof module !== 'undefined') module.exports = { fetchProducts };
+
+if (typeof module !== 'undefined') {
+  module.exports = {
+    fetchProducts,
+  };
+}
