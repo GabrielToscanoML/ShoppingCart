@@ -11,7 +11,7 @@ describe('4 - Teste a função getSavedCartItems', () => {
   });
 
   it('Verifica se ao executar "getSavedCartItems" o método "localStorage.getItem" contém o parametro "cartItems"', () => {
-    const callFunction = getSavedCartItems();
+    const callFunction = getSavedCartItems('cartItems');
     expect(localStorage.getItem).toBeCalledWith('cartItems');
   });
 });

@@ -12,6 +12,6 @@ describe('3 - Teste a função saveCartItems', () => {
 
   it('Verifica se ao executar "saveCartItems" com argumento, o método "localStorage.getItem" contém o parametro "cartItems" e o próprio argumento', () => {
     const callFunction = saveCartItems('item');
-    expect(localStorage.setItem).toContain('cartItems','item');
+    expect(localStorage.setItem).toBeCalledWith('cartItems','item');
   });
 });
