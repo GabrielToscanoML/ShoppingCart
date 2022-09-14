@@ -6,6 +6,21 @@
 // const { fetchItem } = require('./helpers/fetchItem');
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
+const itemCarrinho = document.querySelector('.cart__items');
+
+// botao e funcao de limpar o carrinho
+const clearCartButton = document.querySelector('.empty-cart');
+function clearCart() {
+  while (itemCarrinho.lastChild) {
+    itemCarrinho.removeChild(itemCarrinho.lastChild);
+  }
+}
+
+clearCartButton.addEventListener('click', clearCart);
+
+function cartItemClickListener(currentTarget) {
+  console.log();
+}
 
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
@@ -29,12 +44,10 @@ const createProductImageElement = (imageSource) => {
  */
  const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
-  const itemCarrinho = document.querySelector('.cart__items');
   itemCarrinho.appendChild(li);
-
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  // li.addEventListener('click', cartItemClickListener);
+  li.addEventListener('click', cartItemClickListener);
   return li;
 };
 
