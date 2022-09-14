@@ -15,11 +15,14 @@ function clearCart() {
     itemCarrinho.removeChild(itemCarrinho.lastChild);
   }
 }
-
 clearCartButton.addEventListener('click', clearCart);
 
-function cartItemClickListener(currentTarget) {
-  console.log();
+function cartItemClickListener(id) {
+  for (let index = itemCarrinho.children.length - 1; index >= 0; index -= 1) {
+    if (itemCarrinho.children[index].id === id) {
+      itemCarrinho.children[index].remove();
+    }
+  }
 }
 
 /**
@@ -47,7 +50,10 @@ const createProductImageElement = (imageSource) => {
   itemCarrinho.appendChild(li);
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
+  li.id = id; // criando id auxiliar
+  li.addEventListener('click', () => {
+    cartItemClickListener(id);
+  });
   return li;
 };
 
@@ -66,7 +72,6 @@ const createCustomElement = (element, className, innerText) => {
 };
 
 async function addItemCart(id) {
-  // console.log(id); aqui ta certo
   const targetItem = await fetchItem(id);
   createCartItemElement({ 
     id: targetItem.id,
@@ -74,13 +79,6 @@ async function addItemCart(id) {
     price: targetItem.price, 
   });
 }
-
-// async function recebeItem(id) {
-//   const targetItem = await fetchItem(id);
-//   // console.log(targetItem);
-//   return targetItem;
-// }
-
 /**
  * Função responsável por criar e retornar o elemento do produto.
  * @param {Object} product - Objeto do produto. 
@@ -99,7 +97,6 @@ const createProductItemElement = ({ id, title, thumbnail, price }) => {
   section.appendChild(createCustomElement('span', 'item__price', price));
   section.appendChild(createProductImageElement(thumbnail));
   const addCartButton = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
-  // const targetItem = recebeItem(id);
   addCartButton.addEventListener('click', () => {
     addItemCart(id);
   });
