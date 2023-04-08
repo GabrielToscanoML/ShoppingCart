@@ -1,7 +1,9 @@
+// const getSavedCartItems = require("./helpers/getSavedCartItems");
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
 // const { fetchProducts } = require('./helpers/fetchProducts');
 // const { fetchItem } = require("./helpers/fetchItem");
+
 
 // const { fetchItem } = require('./helpers/fetchItem');
 
@@ -12,7 +14,9 @@ const totalPriceHTML = document.querySelector('.total-price');
 
 // botao e funcao de limpar o carrinho
 const clearCartButton = document.querySelector('.empty-cart');
+
 function clearCart() {
+  localStorage.setItem('cartItems', JSON.stringify([]));
   while (itemCarrinho.lastChild) {
     itemCarrinho.removeChild(itemCarrinho.lastChild);
   }
@@ -81,11 +85,18 @@ const createCustomElement = (element, className, innerText) => {
 
 async function addItemCart(id) {
   const targetItem = await fetchItem(id);
-  createCartItemElement({ 
+  const itensSaved = JSON.parse(localStorage.getItem('cartItems'));
+  createCartItemElement({
     id: targetItem.id,
     title: targetItem.title,
     price: targetItem.price, 
   });
+  if (itensSaved === null) {
+    localStorage.setItem('cartItems', JSON.stringify([targetItem]));
+  } else {
+    itensSaved.push(targetItem);
+    localStorage.setItem('cartItems', JSON.stringify(itensSaved));
+  }
 }
 /**
  * Função responsável por criar e retornar o elemento do produto.
@@ -120,8 +131,10 @@ const createProductItemElement = ({ id, title, thumbnail, price }) => {
 const getIdFromProductItem = (product) => product.querySelector('span.item_id').innerText;
 
 const criandoListaDeItens = async () => {
-  const produtos = await fetchProducts('computador');
-  const listaProdutos = produtos.results;
+  const loading = document.querySelector('.loading');
+  const { results } = await fetchProducts('computador');
+  loading.parentNode.removeChild(loading);
+  const listaProdutos = results;
   listaProdutos.forEach((item) => {
     createProductItemElement({
       id: item.id,
@@ -135,4 +148,12 @@ const criandoListaDeItens = async () => {
 window.onload = () => {
   totalPriceHTML.innerText = `VALOR TOTAL: R$ ${totalPrice}`;
   criandoListaDeItens();
+  const itensSaved =  JSON.parse(localStorage.getItem('cartItems'));
+  if (itensSaved === null) {
+    localStorage.setItem('cartItems', JSON.stringify([]));
+  } else {
+    itensSaved.forEach((item) => {
+      createCartItemElement(item);
+    });
+  }
 };
